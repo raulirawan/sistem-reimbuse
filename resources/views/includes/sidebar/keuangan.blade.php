@@ -19,6 +19,9 @@
             <li class="submenu-item ">
                 <a href="{{ route('keuangan.reimbuse.index.tolak') }}">Reimburse Di Tolak</a>
             </li>
+            <li class="submenu-item ">
+                <a href="{{ route('keuangan.reimbuse.index-all') }}">Reimburse Data</a>
+            </li>
         </ul>
     </li>
 

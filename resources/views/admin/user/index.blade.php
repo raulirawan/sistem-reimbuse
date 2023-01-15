@@ -61,7 +61,9 @@
                                         <td>
                                             <button href="" class="btn btn-info btn-sm" id="edit"
                                                 data-id="{{ $item->id }}"
-                                                data-jabatan_id="{{ $item->jabatan_id }}"data-name="{{ $item->name }}"
+                                                data-jabatan_id="{{ $item->jabatan_id }}"
+                                                data-name="{{ $item->name }}"
+                                                data-roles="{{ $item->roles }}"
                                                 data-bs-toggle="modal" data-bs-target="#modal-edit">Edit</button>
                                             <a href="{{ route('admin.user.delete', $item->id) }}"
                                                 onclick="return confirm('Yakin ?')" class="btn btn-danger btn-sm">Hapus</a>
@@ -135,6 +137,7 @@
                                         <option value="PARTNER">PARTNER</option>
                                         <option value="KEUANGAN">KEUANGAN</option>
                                         <option value="SEKRETARIS">SEKRETARIS</option>
+                                        <option value="ADMIN">ADMIN</option>
                                     </select>
                                 </div>
 
@@ -177,7 +180,6 @@
                                     <input type="text" class="form-control" id="name"
                                         value="{{ old('name') }}" name="name" placeholder="Masukan Nama" required>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="helpInputTop">Jabatan</label>
                                     <select name="jabatan_id" id="jabatan_id" class="form-control" required>
@@ -187,6 +189,19 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="helpInputTop">Roles</label>
+                                    <select name="roles" id="roles" class="form-control" required>
+                                        <option value="">Pilih Roles</option>
+                                        <option value="KARYAWAN">KARYAWAN</option>
+                                        <option value="PARTNER">PARTNER</option>
+                                        <option value="KEUANGAN">KEUANGAN</option>
+                                        <option value="SEKRETARIS">SEKRETARIS</option>
+                                        <option value="ADMIN">ADMIN</option>
+                                    </select>
+                                </div>
+
 
                             </div>
                         </div>
@@ -225,8 +240,10 @@
                     var id = $(this).data('id');
                     var name = $(this).data('name');
                     var jabatan_id = $(this).data('jabatan_id');
+                    var roles = $(this).data('roles');
                     $('#name').val(name);
                     $('#jabatan_id').val(jabatan_id);
+                    $('#roles').val(roles);
                     $('#form-edit').attr('action', '/admin/user/update/' + id);
                 });
             });

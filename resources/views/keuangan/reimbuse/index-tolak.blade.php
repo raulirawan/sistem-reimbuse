@@ -84,7 +84,7 @@
 
     <div class="modal fade text-left" id="modal-voucher" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <form action="#" id="form-voucher-edit" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -135,8 +135,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="basicInput">Catatan</label>
-                                    <textarea name="catatan_keuangan" id="catatan_keuangan" class="form-control"
-                                        placeholder="Masukan Catatan"></textarea>
+                                    <textarea name="catatan_keuangan" id="catatan_keuangan" class="form-control" placeholder="Masukan Catatan"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -230,19 +229,31 @@
                     item.forEach((val, item) => {
                         html += `
                         <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" class="form-control mt-2" name="nomor_akun[]"
+                                placeholder="Nomor Akun" required value="${val.nomor_akun}">
+                        </div>
                         <div class="col-md-3">
-                        <input type="text" class="form-control mt-2" name="nomor_akun[]"
-                            placeholder="Nomor Akun" value=${val.nomor_akun} required>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control mt-2" name="nama[]"
-                            placeholder="Nama" value=${val.nama} required>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" class="form-control mt-2" name="harga[]"
-                            placeholder="Harga" value=${val.harga} required>
-                    </div>
+                            <input type="text" class="form-control mt-2" name="nama[]"
+                                placeholder="Nama" required value="${val.nama}">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control mt-2" name="harga[]"
+                                placeholder="Harga" required value="${val.harga}">
+                        </div>
                         <div class="col-md-1">
+                            <select name="tipe_uang[]" class="form-control mt-2">
+                                <option value="USD" ${val.tipe_uang === 'USD' ? 'selected' : ''}>USD</option>
+                                <option value="RP" ${val.tipe_uang === 'RP' ? 'selected' : ''}>RP</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <select name="status[]" class="form-control mt-2">
+                                <option value="Dr" ${val.status === 'Dr' ? 'selected' : ''}>Dr</option>
+                                <option value="Cr" ${val.status === 'Cr' ? 'selected' : ''}>Cr</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
                             <button class="btn btn-danger badge mt-3 delete-row">(-)</button>
                         </div>
                     </div>
@@ -269,25 +280,37 @@
                     e.preventDefault();
                     var html = `
                     <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" class="form-control mt-2" name="nomor_akun[]"
+                                placeholder="Nomor Akun" required>
+                        </div>
                         <div class="col-md-3">
-                        <input type="text" class="form-control mt-2" name="nomor_akun[]"
-                            placeholder="Nomor Akun" required>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control mt-2" name="nama[]"
-                            placeholder="Nama" required>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" class="form-control mt-2" name="harga[]"
-                            placeholder="Harga" required>
-                    </div>
+                            <input type="text" class="form-control mt-2" name="nama[]"
+                                placeholder="Nama" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control mt-2" name="harga[]"
+                                placeholder="Harga" required>
+                        </div>
                         <div class="col-md-1">
+                            <select name="tipe_uang[]" class="form-control mt-2">
+                                <option value="USD">USD</option>
+                                <option value="RP">RP</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <select name="status[]" class="form-control mt-2">
+                                <option value="Dr">Dr</option>
+                                <option value="Cr">Cr</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
                             <button class="btn btn-danger badge mt-3 delete-row">(-)</button>
                         </div>
                     </div>
                 `;
 
-                    $("#row-item").append(html);
+                    $("#row-item-edit").append(html);
                 });
 
                 $(document).on('click', '.delete-row', function() {

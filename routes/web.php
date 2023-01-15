@@ -61,6 +61,7 @@ Route::prefix('keuangan')
         Route::get('dashboard', 'Keuangan\DashboardController@index')->name('keuangan.dashboard.index');
 
         Route::get('reimbuse', 'Keuangan\ReimbuseController@index')->name('keuangan.reimbuse.index');
+        Route::get('reimbuse/all', 'Keuangan\ReimbuseController@indexAll')->name('keuangan.reimbuse.index-all');
         Route::get('reimbuse/detail/{id}', 'Keuangan\ReimbuseController@show')->name('keuangan.reimbuse.show');
         Route::get('reimbuse/ditolak', 'Keuangan\ReimbuseController@indexTolak')->name('keuangan.reimbuse.index.tolak');
         Route::post('reimbuse/payment-voucher/{reimbuse_id}', 'Keuangan\ReimbuseController@paymentVoucher')->name('keuangan.reimbuse.payment.voucher');
@@ -97,4 +98,7 @@ Route::prefix('sekretaris')
 
 Route::middleware(['auth'])->group(function () {
     Route::get('payment-voucher/pdf/{reimbuse_id}', 'PaymentVoucherController@generatePdf')->name('generatePdf');
+
+    Route::get('lihat-bukti/{reimbuse_id}', 'PaymentVoucherController@lihatBuktiNota')->name('lihat.bukti.nota');
+
 });

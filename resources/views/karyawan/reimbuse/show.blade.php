@@ -56,7 +56,7 @@
                             <tr>
                                 <th style="width: 400px">Bukti Nota</th>
                                 <td>
-                                    <a href="{{ asset($reimbuse->bukti_nota) }}" target="_blank"
+                                    <a href="{{ route('lihat.bukti.nota', $reimbuse->id) }}" target="_blank"
                                         class="btn badge btn-info">Lihat Bukti</a>
                                 </td>
                             </tr>

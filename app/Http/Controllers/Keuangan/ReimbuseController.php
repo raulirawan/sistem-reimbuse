@@ -17,6 +17,12 @@ class ReimbuseController extends Controller
         return view('keuangan.reimbuse.index', compact('reimbuse'));
     }
 
+    public function indexAll()
+    {
+        $reimbuse = Reimbuse::where('status', 'SELESAI')->orderBy('created_at', 'DESC')->get();
+        return view('keuangan.reimbuse.index-all', compact('reimbuse'));
+    }
+
     public function indexTolak()
     {
         $reimbuse = Reimbuse::where(['status' => 'MENUNGGU KEUANGAN', 'tolak_keuangan' => 1])->orderBy('created_at', 'DESC')->get();
@@ -46,6 +52,8 @@ class ReimbuseController extends Controller
                 'nomor_akun' => $value,
                 'nama' => $request->nama[$key],
                 'harga' => $request->harga[$key],
+                'tipe_uang' => $request->tipe_uang[$key],
+                'status' => $request->status[$key],
             ];
         }
         ReimbuseDetail::insert($reimbuseDetail);
@@ -70,6 +78,7 @@ class ReimbuseController extends Controller
         $reimbuse->says = $request->says;
         $reimbuse->catatan_keuangan = $request->catatan_keuangan;
         $reimbuse->status_keuangan = 1;
+        $reimbuse->status_sekretaris = 0;
         $reimbuse->keuangan_id = Auth::user()->id;
         $reimbuse->tolak_keuangan = 0;
         $reimbuse->status = 'MENUNGGU SEKRETARIS';
@@ -82,6 +91,8 @@ class ReimbuseController extends Controller
                 'nomor_akun' => $value,
                 'nama' => $request->nama[$key],
                 'harga' => $request->harga[$key],
+                'tipe_uang' => $request->tipe_uang[$key],
+                'status' => $request->status[$key],
             ];
         }
         ReimbuseDetail::insert($reimbuseDetail);

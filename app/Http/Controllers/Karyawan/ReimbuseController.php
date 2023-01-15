@@ -20,10 +20,10 @@ class ReimbuseController extends Controller
     {
         $request->validate(
             [
-                'bukti_nota' => 'mimes:jpeg,png,jpg|max:1028',
+                'bukti_nota.*' => 'mimes:jpeg,png,jpg|max:2048',
             ],
             [
-                'bukti_nota.mimes' => 'Gambar Harus Bertipe PNG, JPG, atau JPEG',
+                'bukti_nota.mimes.%' => 'Gambar Harus Bertipe PNG, JPG, atau JPEG',
             ]
         );
 
@@ -36,13 +36,17 @@ class ReimbuseController extends Controller
         $data->status = 'MENUNGGU KEUANGAN';
 
         if ($request->hasFile('bukti_nota')) {
-            $file = $request->file('bukti_nota');
-            $tujuan_upload = 'image/bukt-nota/';
-            $nama_file = time() . "_" . $file->getClientOriginalName();
-            $nama_file = str_replace(' ', '', $nama_file);
-            $file->move($tujuan_upload, $nama_file);
+            $dataFile = [];
+            foreach ($request->file('bukti_nota') as $key => $val) {
+                $tujuan_upload = 'bukti-nota/' . Auth::user()->id . '/';
+                $nama_file = time() . "_" . $val->getClientOriginalName();
+                $nama_file = str_replace(' ', '', $nama_file);
+                $val->move($tujuan_upload, $nama_file);
 
-            $data->bukti_nota = $tujuan_upload . $nama_file;
+                $dataFile[] = $tujuan_upload . $nama_file;
+            }
+            $file = json_encode($dataFile);
+            $data->bukti_nota = $file;
         }
 
         $data->save();

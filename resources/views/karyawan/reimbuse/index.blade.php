@@ -114,9 +114,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="basicInput">Bukti Nota</label>
-                                    <input type="file" class="form-control" name="bukti_nota"required>
-                                    @if ($errors->has('bukti_nota'))
-                                        <span class="text-danger">{{ $errors->first('bukti_nota') }}</span>
+                                    <input type="file" name="bukti_nota[]" class="form-control" multiple>
+                                    @if ($errors->has('bukti_nota.*'))
+                                        <span class="text-danger">{{ $errors->first('bukti_nota.*') }}</span>
                                     @endif
                                 </div>
                             </div>

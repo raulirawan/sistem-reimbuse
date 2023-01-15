@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::where('roles', '!=', 'ADMIN')->get();
+        $users = User::all();
         return view('admin.user.index', compact('users'));
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
         $data = User::findOrFail($id);
         $data->name = $request->name;
         $data->jabatan_id = $request->jabatan_id;
-
+        $data->roles = $request->roles;
         $data->save();
         if ($data != null) {
             Alert::success('Success', 'Data Berhasil di Update');

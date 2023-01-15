@@ -23,7 +23,7 @@
 @endphp
 
 <body>
-    <p style="text-align:center">Payment Voucher</p>
+    <p style="text-align:center; margin-top: 140px">Payment Voucher</p>
 
     <p style="text-align:center">&nbsp;</p>
 
@@ -98,23 +98,35 @@
                 <td style="height:21px; text-align:center; width:8.72159%">&nbsp;</td>
             </tr>
             @foreach ($reimbuse->reimbuseDetail as $item)
-                <tr>
-                    <td style="width:16%">&nbsp;&nbsp;{{ $item->nomor_akun }}</td>
-                    <td style="width:32.7302%">&nbsp;&nbsp;{{ $item->nama }}</td>
-                    <td style="width:18.2698%">&nbsp;&nbsp;</td>
-                    <td style="width:16%">&nbsp;&nbsp;Rp{{ number_format($item->harga) }}</td>
-                    <td style="text-align:center; width:8.72159%; font-family: DejaVu Sans, sans-serif;">&#10003;</td>
-                    <td style="text-align:center; width:8.72159%">&nbsp;</td>
-                </tr>
+                @if ($item->status == 'Dr')
+                    <tr>
+                        <td style="width:16%">&nbsp;&nbsp;{{ $item->nomor_akun }}</td>
+                        <td style="width:32.7302%">&nbsp;&nbsp;{{ $item->nama }}</td>
+                        <td style="width:18.2698%">
+                            &nbsp;&nbsp;{{ $item->tipe_uang == 'USD' ? number_format($item->harga) : '' }}</td>
+                        <td style="width:16%">
+                            &nbsp;&nbsp;{{ $item->tipe_uang == 'RP' ? 'Rp' . number_format($item->harga) : '' }}</td>
+                        <td style="text-align:center; width:8.72159%; font-family: DejaVu Sans, sans-serif;">&#10003;
+                        </td>
+                        <td style="text-align:center; width:8.72159%">&nbsp;</td>
+                    </tr>
+                @endif
+                @if ($item->status == 'Cr')
+                    <tr>
+                        <td style="width:16%">&nbsp;&nbsp;{{ $item->nomor_akun }}</td>
+                        <td style="width:32.7302%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item->nama }}</td>
+                        <td style="width:18.2698%">
+                            &nbsp;&nbsp;{{ $item->tipe_uang == 'USD' ? number_format($item->harga) : '' }}</td>
+                        <td style="width:16%">
+                            &nbsp;&nbsp;{{ $item->tipe_uang == 'RP' ? 'Rp' . number_format($item->harga) : '' }}
+                        </td>
+                        <td style="text-align:center; width:8.72159%"></td>
+                        <td style="text-align:center; width:8.72159%; font-family: DejaVu Sans, sans-serif;">
+                            &#10003;</td>
+                    </tr>
+                @endif
             @endforeach
-            <tr>
-                <td style="width:16%">&nbsp;&nbsp;1-11000</td>
-                <td style="width:32.7302%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kas Kecil</td>
-                <td style="width:18.2698%">&nbsp;</td>
-                <td style="width:16%">&nbsp;&nbsp;Rp{{ number_format($reimbuse->total_reimbuse) }}</td>
-                <td style="text-align:center; width:8.72159%"></td>
-                <td style="text-align:center; width:8.72159%; font-family: DejaVu Sans, sans-serif;">&#10003;</td>
-            </tr>
+
         </tbody>
     </table>
 
@@ -130,16 +142,23 @@
             </tr>
             <tr>
                 <td style="height:96px; text-align:center; width:25%"><span
-                        style="font-size:14px">{{ $reimbuse->status_keuangan == 1 ? 'Approve' : '' }}</span></td>
-                <td style="height: 96px; width: 25%; text-align: center;"><span
-                        style="font-size:14px">{{ $reimbuse->status_sekretaris == 1 ? 'Approve' : '' }}</span>
+                        style="font-size:14px; color: green">{{ $reimbuse->status_keuangan == 1 ? 'Approve' : '' }}</span>
                 </td>
                 <td style="height: 96px; width: 25%; text-align: center;"><span
-                        style="font-size:14px">{{ $reimbuse->status_partner == 1 ? 'Approve' : '' }}</span>
+                        style="font-size:14px; color: green">{{ $reimbuse->status_sekretaris == 1 ? 'Approve' : '' }}</span>
                 </td>
                 <td style="height: 96px; width: 25%; text-align: center;"><span
-                        style="font-size:14px">{{ ($reimbuse->status == 'SELESAI') == 1 ? 'Approve' : '' }}</span>
+                        style="font-size:14px; color: green">{{ $reimbuse->status_partner == 1 ? 'Approve' : '' }}</span>
                 </td>
+                @if ($reimbuse->tipe == 'UANG PRIBADI')
+                    <td style="height: 96px; width: 25%; text-align: center;"><span
+                            style="font-size:14px; color: green">{{ ($reimbuse->status == 'SELESAI') == 1 ? 'Approve' : '' }}</span>
+                    </td>
+                @else
+                    <td style="height: 96px; width: 25%; text-align: center;"><span
+                            style="font-size:14px; color: green"></span>
+                    </td>
+                @endif
             </tr>
             <tr>
                 <td style="height:18px; width:25%">Name : {{ $reimbuse->keuangan->name ?? '-' }}</td>
@@ -148,23 +167,31 @@
                 <td style="height:18px; width:25%">Name : {{ $reimbuse->karyawan->name ?? '-' }}&nbsp;</td>
             </tr>
             @php
-                $approveDateKeuangan = Carbon\Carbon::parse($reimbuspe->approve_date_keuangan ?? date('Y-m-d H:i:s'))->locale('id');
+                $approveDateKeuangan = Carbon\Carbon::parse($reimbuse->approve_date_keuangan)->locale('id');
                 $approveDateKeuangan->settings(['formatFunction' => 'translatedFormat']);
 
-                $approveDateSekretaris = Carbon\Carbon::parse($reimbuse->approve_date_sekretaris ?? date('Y-m-d H:i:s'))->locale('id');
+                $approveDateSekretaris = Carbon\Carbon::parse($reimbuse->approve_date_sekretaris)->locale('id');
                 $approveDateSekretaris->settings(['formatFunction' => 'translatedFormat']);
 
-                $approveDatePartner = Carbon\Carbon::parse($reimbuse->approve_date_partner ?? date('Y-m-d H:i:s'))->locale('id');
+                $approveDatePartner = Carbon\Carbon::parse($reimbuse->approve_date_partner)->locale('id');
                 $approveDatePartner->settings(['formatFunction' => 'translatedFormat']);
 
-                $approveDateKaryawan = Carbon\Carbon::parse($reimbuse->approve_date_karyawan ?? date('Y-m-d H:i:s'))->locale('id');
+                $approveDateKaryawan = Carbon\Carbon::parse($reimbuse->approve_date_karyawan)->locale('id');
                 $approveDateKaryawan->settings(['formatFunction' => 'translatedFormat']);
             @endphp
             <tr>
-                <td style="height:18px; width:25%">Date :&nbsp;{{ $approveDateKeuangan->format('j F Y') }}</td>
-                <td style="height:18px; width:25%">Date :&nbsp;{{ $approveDateSekretaris->format('j F Y') }}</td>
-                <td style="height:18px; width:25%">Date :&nbsp;{{ $approveDatePartner->format('j F Y') }}</td>
-                <td style="height:18px; width:25%">Date :&nbsp;{{ $approveDateKaryawan->format('j F Y') }}</td>
+                <td style="height:18px; width:25%">Date
+                    :&nbsp;{{ isset($reimbuse->approve_date_keuangan) ? $approveDateKeuangan->format('j F Y') : '-' }}
+                </td>
+                <td style="height:18px; width:25%">Date
+                    :&nbsp;{{ isset($reimbuse->approve_date_sekretaris) ? $approveDateSekretaris->format('j F Y') : '-' }}
+                </td>
+                <td style="height:18px; width:25%">Date
+                    :&nbsp;{{ isset($reimbuse->approve_date_partner) ? $approveDatePartner->format('j F Y') : '-' }}
+                </td>
+                <td style="height:18px; width:25%">Date
+                    :&nbsp;{{ isset($reimbuse->approve_date_karyawan) ? $approveDateKaryawan->format('j F Y') : '-' }}
+                </td>
             </tr>
         </tbody>
     </table>
