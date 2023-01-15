@@ -58,7 +58,7 @@
                                         <td>
                                             <a href="{{ route('keuangan.reimbuse.show', $item->id) }}" target="_blank"
                                                 class="btn btn-info badge">Detail</a>
-                                            <a href="{{ asset($item->bukti_nota) }}" target="_blank"
+                                            <a href="{{ route('lihat.bukti.nota', $item->id) }}" target="_blank"
                                                 class="btn btn-info badge">Bukti</a>
                                             <button href="" class="btn btn-success badge" id="payment-voucher"
                                                 data-id="{{ $item->id }}" data-bs-toggle="modal"

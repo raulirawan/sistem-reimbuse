@@ -56,7 +56,7 @@
                                         <td>Rp{{ number_format($item->total_reimbuse) }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>
-                                            <a href="{{ asset($item->bukti_nota) }}" target="_blank"
+                                            <a href="{{ route('lihat.bukti.nota', $item->id) }}" target="_blank"
                                                 class="btn btn-info badge">Bukti</a>
                                             <button href="" class="btn btn-success badge" id="edit-payment-voucher"
                                                 data-id="{{ $item->id }}" data-no="{{ $item->no }}"
