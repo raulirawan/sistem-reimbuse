@@ -22,6 +22,9 @@
             <li class="submenu-item ">
                 <a href="{{ route('keuangan.reimbuse.index-all') }}">Reimburse Data</a>
             </li>
+            <li class="submenu-item ">
+                <a href="{{ route('keuangan.reimbuse.index.transfer') }}">Reimburse Perlu Di Transfer</a>
+            </li>
         </ul>
     </li>
 

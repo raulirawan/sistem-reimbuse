@@ -52,6 +52,10 @@ class UserController extends Controller
         $data->name = $request->name;
         $data->jabatan_id = $request->jabatan_id;
         $data->roles = $request->roles;
+
+        if ($request->has('password')) {
+            $data->password = bcrypt($request->password);
+        }
         $data->save();
         if ($data != null) {
             Alert::success('Success', 'Data Berhasil di Update');

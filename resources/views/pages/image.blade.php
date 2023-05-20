@@ -11,7 +11,12 @@
 <body>
     @if (json_decode($reimbuse->bukti_nota) != null)
         @foreach (json_decode($reimbuse->bukti_nota) as $value)
-            <img src="{{ asset($value) }}">
+            @php
+                $ext = explode('.', $value);
+            @endphp
+            @if ($ext[1] != 'pdf')
+                <img src="{{ asset($value) }}" style="width: 100%; max-height: 100%" >
+            @endif
         @endforeach
     @else
         <img src="{{ asset($reimbuse->bukti_nota) }}">

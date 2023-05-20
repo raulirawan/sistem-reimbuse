@@ -39,6 +39,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%">No</th>
+                                    <th>Nama</th>
                                     <th>Tanggal Pengajuan</th>
                                     <th>Total Reimburse</th>
                                     <th>Status</th>
@@ -49,6 +50,7 @@
                                 @foreach ($reimbuse as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->karyawan->name }}</td>
                                         <td>{{ date('d F Y H:i', strtotime($item->tanggal_pengajuan)) }}</td>
                                         <td>Rp{{ number_format($item->total_reimbuse) }}</td>
                                         <td>{{ $item->status }}</td>

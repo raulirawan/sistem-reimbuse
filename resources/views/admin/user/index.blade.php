@@ -202,6 +202,12 @@
                                     </select>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="helpInputTop">Password</label>
+                                    <input type="password" class="form-control" name="password"
+                                        placeholder="Masukan Password">
+                                </div>
+
 
                             </div>
                         </div>

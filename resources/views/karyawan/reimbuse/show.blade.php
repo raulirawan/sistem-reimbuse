@@ -56,8 +56,10 @@
                             <tr>
                                 <th style="width: 400px">Bukti Nota</th>
                                 <td>
-                                    <a href="{{ route('lihat.bukti.nota', $reimbuse->id) }}" target="_blank"
-                                        class="btn badge btn-info">Lihat Bukti</a>
+                                    <a href="{{ route('lihat.bukti.nota', [$reimbuse->id, 'lihat']) }}" target="_blank"
+                                        class="btn badge btn-info">Read Only</a>
+                                    <a href="{{ route('lihat.bukti.nota', [$reimbuse->id, 'download']) }}" target="_blank"
+                                        class="btn badge btn-info">Download</a>
                                 </td>
                             </tr>
 
@@ -113,12 +115,17 @@
                                 <tr>
                                     <th style="width: 400px">Payment Voucher</th>
                                     <td>
-                                        <a href="{{ route('generatePdf', $reimbuse->id) }}" target="_blank"
-                                            class="btn badge btn-info">Download Payment
-                                            Voucher</a>
+                                        <a href="{{ route('generatePdf', [$reimbuse->id, 'lihat']) }}" target="_blank"
+                                            class="btn badge btn-info">Read Only</a>
+                                        <a href="{{ route('generatePdf', [$reimbuse->id, 'download']) }}" target="_blank"
+                                            class="btn badge btn-info">Download</a>
                                     </td>
                                 </tr>
                             @endif
+                            <tr>
+                                <th>Approve Transfer</th>
+                                <td>{{ $reimbuse->bukti_transfer ?? '-' }}</td>
+                            </tr>
                             @if ($reimbuse->status_keuangan == 1)
                                 <tr>
                                     <th>Date Approve</th>
@@ -155,7 +162,7 @@
                                 <th style="width: 400px">Catatan</th>
                                 <td>{{ $reimbuse->catatan_sekretaris ?? '-' }}</td>
                             </tr>
-                            @if ($reimbuse->bukti_transfer)
+                            {{-- @if ($reimbuse->bukti_transfer)
                                 <tr>
                                     <th style="width: 400px">Bukti Transfer</th>
                                     <td>
@@ -164,7 +171,7 @@
                                             Transfer</a>
                                     </td>
                                 </tr>
-                            @endif
+                            @endif --}}
                             @if ($reimbuse->status_sekretaris == 1)
                                 <tr>
                                     <th>Date Approve</th>

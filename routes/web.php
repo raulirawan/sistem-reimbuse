@@ -52,7 +52,12 @@ Route::prefix('karyawan')
         // CRUD REIMBUSE
         Route::get('reimbuse', 'Karyawan\ReimbuseController@index')->name('karyawan.reimbuse.index');
         Route::post('reimbuse/create', 'Karyawan\ReimbuseController@store')->name('karyawan.reimbuse.store');
+
+        Route::get('reimbuse/approve', 'Karyawan\ReimbuseController@indexApprove')->name('karyawan.reimbuse.index.approve');
+        Route::post('reimbuse/approve/{id}', 'Karyawan\ReimbuseController@approve')->name('karyawan.reimbuse.approve');
         Route::get('reimbuse/{id}', 'Karyawan\ReimbuseController@show')->name('karyawan.reimbuse.show');
+
+
     });
 
 Route::prefix('keuangan')
@@ -67,6 +72,8 @@ Route::prefix('keuangan')
         Route::post('reimbuse/payment-voucher/{reimbuse_id}', 'Keuangan\ReimbuseController@paymentVoucher')->name('keuangan.reimbuse.payment.voucher');
         Route::put('reimbuse/payment-voucher/{reimbuse_id}', 'Keuangan\ReimbuseController@updatePaymentVoucher')->name('keuangan.reimbuse.payment.voucher.update');
         Route::post('reimbuse/tolak/{reimbuse_id}', 'Keuangan\ReimbuseController@reimbuseTolak')->name('keuangan.reimbuse.tolak');
+        Route::get('reimbuse/transfer', 'Keuangan\ReimbuseController@indexTransfer')->name('keuangan.reimbuse.index.transfer');
+        Route::post('reimbuse/transfer/{reimbuse_id}', 'Keuangan\ReimbuseController@approveTransfer')->name('keuangan.reimbuse.index.upload.bukti.transfer');
     });
 
 Route::prefix('partner')
@@ -91,14 +98,13 @@ Route::prefix('sekretaris')
         Route::post('reimbuse/approve/{reimbuse_id}', 'Sekretaris\ReimbuseController@approve')->name('sekretaris.reimbuse.approve');
         Route::post('reimbuse/reject/{reimbuse_id}', 'Sekretaris\ReimbuseController@reject')->name('sekretaris.reimbuse.reject');
 
-        Route::get('reimbuse/transfer', 'Sekretaris\ReimbuseController@indexTransfer')->name('sekretaris.reimbuse.index.transfer');
-        Route::post('reimbuse/transfer/{reimbuse_id}', 'Sekretaris\ReimbuseController@uploadBuktiTransfer')->name('sekretaris.reimbuse.index.upload.bukti.transfer');
+        // Route::get('reimbuse/transfer', 'Sekretaris\ReimbuseController@indexTransfer')->name('sekretaris.reimbuse.index.transfer');
+        // Route::post('reimbuse/transfer/{reimbuse_id}', 'Sekretaris\ReimbuseController@uploadBuktiTransfer')->name('sekretaris.reimbuse.index.upload.bukti.transfer');
     });
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('payment-voucher/pdf/{reimbuse_id}', 'PaymentVoucherController@generatePdf')->name('generatePdf');
+    Route::get('payment-voucher/pdf/{reimbuse_id}/{param?}', 'PaymentVoucherController@generatePdf')->name('generatePdf');
 
-    Route::get('lihat-bukti/{reimbuse_id}', 'PaymentVoucherController@lihatBuktiNota')->name('lihat.bukti.nota');
-
+    Route::get('lihat-bukti/{reimbuse_id}/{param?}', 'PaymentVoucherController@lihatBuktiNota')->name('lihat.bukti.nota');
 });

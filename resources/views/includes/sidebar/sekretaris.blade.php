@@ -16,9 +16,9 @@
             <li class="submenu-item ">
                 <a href="{{ route('sekretaris.reimbuse.index') }}">Reimburse Pending</a>
             </li>
-            <li class="submenu-item ">
+            {{-- <li class="submenu-item ">
                 <a href="{{ route('sekretaris.reimbuse.index.transfer') }}">Reimburse Perlu Di Transfer</a>
-            </li>
+            </li> --}}
         </ul>
     </li>
 

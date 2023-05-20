@@ -19,7 +19,7 @@ class ReimbuseController extends Controller
 
     public function indexAll()
     {
-        $reimbuse = Reimbuse::where('status', 'SELESAI')->orderBy('created_at', 'DESC')->get();
+        $reimbuse = Reimbuse::orderBy('created_at', 'DESC')->get();
         return view('keuangan.reimbuse.index-all', compact('reimbuse'));
     }
 
@@ -128,5 +128,29 @@ class ReimbuseController extends Controller
         $reimbuse = Reimbuse::findOrFail($id);
 
         return view('karyawan.reimbuse.show', compact('reimbuse'));
+    }
+
+    public function indexTransfer()
+    {
+        $reimbuse = Reimbuse::where(['status_keuangan' => 1, 'status_sekretaris' => 1, 'status_partner' => 1])->whereNull('bukti_transfer')->where('tipe', 'UANG PRIBADI')->orderBy('created_at', 'DESC')->get();
+        return view('keuangan.reimbuse.index-transfer', compact('reimbuse'));
+    }
+
+    public function approveTransfer(Request $request, $reimbuseId)
+    {
+
+        $reimbuse = Reimbuse::findOrFail($reimbuseId);
+
+        $reimbuse->bukti_transfer = $request->bukti_transferp;
+        $reimbuse->status = 'MENUNGGU KARYAWAN';
+        $reimbuse->save();
+
+        if ($reimbuse != null) {
+            Alert::success('Success', 'Data Berhasil di Simpan');
+            return redirect()->route('keuangan.reimbuse.index');
+        } else {
+            Alert::error('Error', 'Data Gagal di Simpan');
+            return redirect()->route('keuangan.reimbuse.index');
+        }
     }
 }

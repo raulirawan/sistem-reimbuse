@@ -33,7 +33,7 @@ class ReimbuseController extends Controller
         $reimbuse->status = 'SELESAI';
         $reimbuse->approve_date_partner = now();
         if ($reimbuse->tipe == 'UANG PRIBADI') {
-            $reimbuse->status = 'MENUNGGU SEKRETARIS TRANSFER';
+            $reimbuse->status = 'MENUNGGU KEUANGAN TRANSFER';
         }
         $reimbuse->save();
 

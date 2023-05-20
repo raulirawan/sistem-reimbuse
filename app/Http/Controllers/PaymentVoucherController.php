@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 
 class PaymentVoucherController extends Controller
 {
-    public function generatePdf($reimbuseId)
+    public function generatePdf($reimbuseId, $param = 'lihat')
     {
         $m = new Merger();
 
@@ -20,21 +20,75 @@ class PaymentVoucherController extends Controller
         $imagePdf = Pdf::loadview('pages.image', compact('reimbuse'));
 
         $m->addRaw($pdf->output());
-        $m->addRaw($imagePdf->output());
 
-        $filename = $reimbuse->created_at . '-' . $reimbuse->karyawan->name . '-payment_voucher.pdf';
+        $isImage = false;
+        foreach (json_decode($reimbuse->bukti_nota) as $key => $value) {
+            if (str_contains($value, '.pdf')) {
+                $tempPdf[] = [
+                    'file' => $value,
+                ];
+            } else {
+                $isImage = true;
+            }
+        }
+        if (!empty($tempPdf)) {
+            foreach ($tempPdf as $key => $value) {
+                $m->addFile($value['file']);
+            }
+        }
 
-        return new Response($m->merge(), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' =>  'attachment; filename="' . $filename . '"',
-            'Content-Length' => strlen($m->merge()),
-        ]);
+        if ($isImage) {
+            $m->addRaw($imagePdf->output());
+        }
+
+        $filename = 'payment-voucher/'. $reimbuse->karyawan->name . '-payment_voucher.pdf';
+
+        if ($param == 'download') {
+            return new Response($m->merge(), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' =>  'attachment; filename="' . $filename . '"',
+                'Content-Length' => strlen($m->merge()),
+            ]);
+        }
+        file_put_contents($filename, $m->merge());
+        return redirect($filename);
     }
 
-    public function lihatBuktiNota($reimbuseId)
+    public function lihatBuktiNota($reimbuseId, $param = 'lihat')
     {
+        $m = new Merger();
         $reimbuse = Reimbuse::findOrFail($reimbuseId);
         $imagePdf = Pdf::loadview('pages.image', compact('reimbuse'));
-        return $imagePdf->download('bukti-nota-' . $reimbuse->karyawan->name . '.pdf');
+        // check has pdf
+        $tempPdf = [];
+        $isImage = false;
+        foreach (json_decode($reimbuse->bukti_nota) as $key => $value) {
+
+            if (str_contains($value, '.pdf')) {
+                $tempPdf[] = [
+                    'file' => $value,
+                ];
+            } else {
+                $isImage = true;
+            }
+        }
+        if (!empty($tempPdf)) {
+            foreach ($tempPdf as $key => $value) {
+                $m->addFile($value['file']);
+            }
+        }
+        if ($isImage) {
+            $m->addRaw($imagePdf->output());
+        }
+        $filename = 'bukti-nota/'.'bukti-nota-' . $reimbuse->karyawan->name . '.pdf';
+        if ($param == 'download') {
+            return new Response($m->merge(), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' =>  'attachment; filename="' . $filename . '"',
+                'Content-Length' => strlen($m->merge()),
+            ]);
+        }
+        file_put_contents($filename, $m->merge());
+        return redirect($filename);
     }
 }
