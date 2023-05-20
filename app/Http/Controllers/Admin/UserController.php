@@ -52,8 +52,7 @@ class UserController extends Controller
         $data->name = $request->name;
         $data->jabatan_id = $request->jabatan_id;
         $data->roles = $request->roles;
-
-        if ($request->has('password')) {
+        if (!empty($request->password)) {
             $data->password = bcrypt($request->password);
         }
         $data->save();

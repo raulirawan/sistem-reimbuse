@@ -122,6 +122,12 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="basicInput">Catatan</label>
+                                    <textarea name="catatan" id="catatan" class="form-control" placeholder="Masukan Catatan" required></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

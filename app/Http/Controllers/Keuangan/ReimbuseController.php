@@ -141,7 +141,7 @@ class ReimbuseController extends Controller
 
         $reimbuse = Reimbuse::findOrFail($reimbuseId);
 
-        $reimbuse->bukti_transfer = $request->bukti_transferp;
+        $reimbuse->bukti_transfer = $request->bukti_transfer;
         $reimbuse->status = 'MENUNGGU KARYAWAN';
         $reimbuse->save();
 

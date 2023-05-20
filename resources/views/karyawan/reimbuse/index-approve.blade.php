@@ -53,12 +53,17 @@
                                         <td>Rp{{ number_format($item->total_reimbuse) }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>
-                                            <form action="{{ route('karyawan.reimbuse.approve', $item->id) }}"
+                                            {{-- <form action="{{ route('karyawan.reimbuse.approve', $item->id) }}"
                                                 method="post">
                                                 @csrf
                                                 <button class="btn btn-success badge" id="approve"
                                                     onclick="return confirm('Yakin Approve ?')">Approve</button>
-                                            </form>
+                                            </form> --}}
+                                            <button class="btn btn-success badge" id="approve"
+                                            data-id="{{ $item->id }}" data-bs-toggle="modal"
+                                            data-bs-target="#modal-approve">Approve</button>
+                                            <a href="{{ route('karyawan.reimbuse.show', $item->id) }}"
+                                                class="btn btn-info btn-sm">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -98,7 +103,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="basicInput">Catatan</label>
-                                    <textarea name="bukti_transfer" id="bukti_transfer" class="form-control" placeholder="Masukan Catatan"></textarea>
+                                    <textarea name="catatan" id="catatan" class="form-control" placeholder="Masukan Catatan"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +127,7 @@
         <link rel="stylesheet" href="{{ asset('assets') }}/css/pages/fontawesome.css" />
         <link rel="stylesheet" href="{{ asset('assets') }}/css/pages/datatables.css" />
     @endpush
-    {{-- @push('down-script')
+    @push('down-script')
         <script src="{{ asset('assets') }}/js/extensions/datatables.js"></script>
         @if (count($errors) > 0)
             <script type="text/javascript">
@@ -135,10 +140,10 @@
             $(document).ready(function() {
                 $(document).on('click', '#approve', function() {
                     var id = $(this).data('id');
-                    $('#form-approve').attr('action', '/karyawan/approve/' + id);
+                    $('#form-approve').attr('action', '/karyawan/reimbuse/approve/' + id);
                 });
             });
         </script>
-    @endpush --}}
+    @endpush
 
 @endsection

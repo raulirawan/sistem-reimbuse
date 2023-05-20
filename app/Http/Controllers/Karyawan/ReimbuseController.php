@@ -40,6 +40,7 @@ class ReimbuseController extends Controller
         $data->total_reimbuse = $request->total_reimbuse;
         $data->tipe = $request->tipe;
         $data->status_keuangan = 0;
+        $data->catatan_karyawan = $request->catatan;
         $data->status = 'MENUNGGU KEUANGAN';
 
         if ($request->hasFile('bukti_nota')) {
@@ -78,7 +79,9 @@ class ReimbuseController extends Controller
         $reimbuse = Reimbuse::findOrFail($reimbuseId);
 
         $reimbuse->status = 'SELESAI';
+        $reimbuse->status = 'SELESAI';
         $reimbuse->approve_date_karyawan = now();
+        $reimbuse->catatan_karyawan_approve = $request->catatan;
         $reimbuse->save();
 
         if ($reimbuse != null) {

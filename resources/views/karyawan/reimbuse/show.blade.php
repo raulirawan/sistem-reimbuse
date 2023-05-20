@@ -74,6 +74,16 @@
 
                             </tr>
                             <tr>
+                                <th style="width: 400px">Catatan</th>
+                                <td>{{ $reimbuse->catatan_karyawan ?? '-' }}</td>
+
+                            </tr>
+                            <tr>
+                                <th style="width: 400px">Catatan Approve</th>
+                                <td>{{ $reimbuse->catatan_karyawan_approve ?? '-' }}</td>
+
+                            </tr>
+                            <tr>
 
                         </tbody>
                     </table>
